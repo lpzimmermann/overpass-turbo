@@ -1,0 +1,26 @@
+[out:json][timeout:180];
+
+area["name"="Bern"]["boundary"="administrative"][admin_level~"[6-8]"]->.Bern;
+
+(
+  node["railway"="station"](area.Bern);
+  relation["railway"="station"](area.Bern);
+
+  node["railway"="tram_stop"](area.Bern);
+  relation["railway"="tram_stop"](area.Bern);
+
+  node["public_transport"~"station|platform|stop_position"](area.Bern)["railway"];
+  relation["public_transport"~"station|platform|stop_position"](area.Bern)["railway"];
+)->.candidates;
+
+(
+  node["highway"="bus_stop"](area.Bern);
+  relation["highway"="bus_stop"](area.Bern);
+
+  node["railway"="subway_entrance"](area.Bern);
+  relation["railway"="subway_entrance"](area.Bern);
+)->.exclude;
+
+(.candidates; - .exclude;)->.result;
+
+.result out center;
